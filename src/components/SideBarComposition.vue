@@ -3,18 +3,6 @@
     <a href=""
       ><button>{{ SideBar }}</button></a
     >
-    <a href=""
-      ><button>{{ SideBar }}</button></a
-    >
-    <a href=""
-      ><button>{{ SideBar }}</button></a
-    >
-    <a href=""
-      ><button>{{ SideBar }}</button></a
-    >
-    <a href=""
-      ><button>{{ SideBar }}</button></a
-    >
   </div>
 </template>
 
@@ -35,8 +23,6 @@ button {
 }
 
 .btn-group {
-  display: grid;
-  gap: 25px;
   margin-right: 25px;
 }
 </style>

@@ -11,43 +11,14 @@
           "
         />
         <section class="users">
-          <h2>Пользователи</h2>
+          <h2>Посты</h2>
           <div class="users-block">
-            <!-- <UserCardComposition
-              :product="{
-                name: 'Носки',
-                price: 1234,
-                img: 'https://cdn-sh1.vigbo.com/shops/3903/products/22384082/images/3-d1faa115820328edded0767f65121270.jpg',
-              }"
-            >
-              <template #prepend>
-                <p>Акция</p>
-              </template>
-            </UserCardComposition>
-            <UserCardComposition
-              :product="{
-                name: 'Штаны',
-                price: 5678,
-                img: 'https://beri-bolshe.ru/image/cache/catalog/0000LUDA/8/ge-cache-catalog-export-Shtany_s_manzhetami_serye000001881_1-800x800-800x700.jpg',
-              }"
-            >
-              <template #prepend>
-                <p>Скидка 30%</p>
-              </template>
-            </UserCardComposition>
-            <UserCardComposition
-              :product="{
-                name: 'Куртка',
-                price: 9012,
-                img: 'https://helikon-tex.ru/wp-content/uploads/2023/02/2822498055.jpg',
-              }"
-            >
-              <template #prepend>
-                <p>Акция</p>
-              </template>
-            </UserCardComposition> -->
-            <h2>Посты</h2>
-            <UserCardPlaceHolder v-for="post in posts" :key="post.id" :post="post" />
+            <UserCardPlaceHolder v-for="post in displayedPosts" :key="post.id" :post="post" />
+          </div>
+          <div class="post-btn-container">
+            <button class="post-btn" v-if="visiblePost < posts.length" @click="showMore">
+              показать еще 10 постов
+            </button>
           </div>
         </section>
         <SideBarComposition />
@@ -65,7 +36,7 @@ import type { IPost } from '@/components/Composition/type';
 // import UserCardComposition from '@/components/Composition/UserCardComposition.vue';
 import UserCardPlaceHolder from '@/components/Composition/UserCardPlaceHolder.vue';
 import SideBarComposition from '@/components/SideBarComposition.vue';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 
 const theme = ref('light-theme');
 
@@ -84,6 +55,16 @@ const fetchPosts = async () => {
   } catch (error) {
     console.error('Error fetching posts:', error);
   }
+};
+
+const visiblePost = ref(10);
+
+const displayedPosts = computed(() => {
+  return posts.value.slice(0, visiblePost.value);
+});
+
+const showMore = () => {
+  visiblePost.value += 10;
 };
 
 onMounted(() => {
@@ -107,11 +88,26 @@ onMounted(() => {
   justify-content: space-between;
 }
 
+.users {
+  text-align: center;
+}
+
 .users-block {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 300px);
+  gap: 15px;
   margin-top: 15px;
+}
+
+.post-btn {
+  margin-top: 50px;
+  padding: 5px 10px;
+  font-size: 20px;
+  color: rgb(0, 0, 0);
+  border: 1px solid #000000;
+  border-radius: 5px;
+
+  background-color: #accf9e;
 }
 
 .avatar[data-v-a1fef14f] {
