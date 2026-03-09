@@ -2,6 +2,7 @@
   <div class="container" :class="theme">
     <AppHeaderComposition @theme-changed="ThemeChange" />
     <div class="main-body">
+      <UserForm />
       <div class="container-body">
         <ClickCounterComposition
           @decrement="
@@ -10,7 +11,9 @@
             }
           "
         />
+
         <section class="users">
+          <h2 v-if="isLoading">Loading...</h2>
           <h2>Посты</h2>
           <div class="users-block">
             <UserCardPlaceHolder v-for="post in displayedPosts" :key="post.id" :post="post" />
@@ -35,6 +38,7 @@ import ClickCounterComposition from '@/components/Composition/ClickCounterCompos
 import type { IPost } from '@/components/Composition/type';
 // import UserCardComposition from '@/components/Composition/UserCardComposition.vue';
 import UserCardPlaceHolder from '@/components/Composition/UserCardPlaceHolder.vue';
+import UserForm from '@/components/Composition/UserForm.vue';
 import SideBarComposition from '@/components/SideBarComposition.vue';
 import { ref, onMounted, computed } from 'vue';
 
@@ -46,7 +50,12 @@ const ThemeChange = (isDark: boolean) => {
 
 const posts = ref<IPost[]>([]);
 
+const visiblePost = ref(10);
+
+const isLoading = ref(true);
+
 const fetchPosts = async () => {
+  isLoading.value = true;
   try {
     const response = await fetch('https://jsonplaceholder.typicode.com/posts');
     const data = await response.json();
@@ -54,10 +63,10 @@ const fetchPosts = async () => {
     console.log('Posts fetched:', data);
   } catch (error) {
     console.error('Error fetching posts:', error);
+  } finally {
+    isLoading.value = false;
   }
 };
-
-const visiblePost = ref(10);
 
 const displayedPosts = computed(() => {
   return posts.value.slice(0, visiblePost.value);
