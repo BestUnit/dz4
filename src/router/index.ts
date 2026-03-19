@@ -22,12 +22,10 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const isAuthenticated = !!localStorage.getItem('user-token');
-
-  // Если страница требует авторизации, а токена НЕТ
   if (to.meta.requiresAuth && !isAuthenticated) {
-    next('/login'); // Принудительно отправляем на логин
+    next('/login');
   } else {
-    next(); // В остальных случаях пускаем
+    next();
   }
 });
 

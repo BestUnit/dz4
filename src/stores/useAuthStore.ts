@@ -14,7 +14,7 @@ export const useAuthStore = defineStore('auth', () => {
       const { data } = await $api.post('/posts', {
         formData,
       });
-      localStorage.setItem('user-token', 'fake-jwt-token');
+      localStorage.setItem('user-token', 'fake-token');
       isAuth.value = true;
 
       console.log('Успешная авторизация', data);
