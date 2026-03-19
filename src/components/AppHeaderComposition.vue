@@ -1,26 +1,21 @@
 <template>
-  <header :class="theme">
+  <header>
     <h1 class="text">{{ title }}</h1>
     <button @click="toggleTheme">Dark/White</button>
   </header>
 </template>
 
 <script setup lang="ts">
+import { useTheme } from '@/stores/useTheme';
 import { ref } from 'vue';
 
 const title = ref<string>('Текстиль');
 
-const theme = ref('light-theme');
+const theTheme = useTheme();
 
-const emit = defineEmits<{
-  (e: 'theme-changed', isDark: boolean): void;
-}>();
+const { toggleTheme } = theTheme;
 
-const toggleTheme = () => {
-  const newTheme = theme.value === 'light-theme' ? 'dark-theme' : 'light-theme';
-  theme.value = newTheme;
-  emit('theme-changed', newTheme === 'dark-theme');
-};
+console.log(theTheme);
 
 // const toggleTheme = (isDark: boolean) => {
 //   theme.value = isDark ? 'dark-theme' : 'light-theme'

@@ -1,6 +1,6 @@
 <template>
-  <div class="container" :class="theme">
-    <AppHeaderComposition @theme-changed="ThemeChange" />
+  <div class="container" :class="theTheme.theme">
+    <AppHeaderComposition @theme-changed="theTheme.toggleTheme" />
     <div class="main-body">
       <UserForm />
       <div class="container-body">
@@ -40,13 +40,10 @@ import type { IPost } from '@/components/Composition/type';
 import UserCardPlaceHolder from '@/components/Composition/UserCardPlaceHolder.vue';
 import UserForm from '@/components/Composition/UserForm.vue';
 import SideBarComposition from '@/components/SideBarComposition.vue';
+import { useTheme } from '@/stores/useTheme';
 import { ref, onMounted, computed } from 'vue';
 
-const theme = ref('light-theme');
-
-const ThemeChange = (isDark: boolean) => {
-  theme.value = isDark ? 'dark-theme' : 'light-theme';
-};
+const theTheme = useTheme();
 
 const posts = ref<IPost[]>([]);
 
